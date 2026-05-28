@@ -64,6 +64,24 @@ function init() {
   document.getElementById('totalWords').textContent = totalCards + '+';
   document.getElementById('statTotal').textContent = totalCards;
   document.getElementById('statTopics').textContent = TOPICS.length;
+
+  // Day 범위(최소~최대)를 데이터에서 자동 계산해 문구에 반영
+  // → data.js에 Day를 추가/삭제하면 화면 문구가 자동으로 갱신됨
+  const dayNums = TOPICS
+    .map(t => parseInt(String(t.id).replace(/\D/g, ''), 10))
+    .filter(n => !isNaN(n));
+  if (dayNums.length) {
+    const min = Math.min(...dayNums);
+    const max = Math.max(...dayNums);
+    const range = min === max ? `Day ${min}` : `Day ${min} ~ Day ${max}`;
+    const eyebrow = document.getElementById('heroEyebrow');
+    const footer = document.getElementById('footerText');
+    if (eyebrow) eyebrow.textContent = `실비아 Voca LAB · ${range}`;
+    if (footer) {
+      footer.textContent = `¡Vamos! 스페인어 학습 · ${range.replace(' ~ ', ' → ')} 통합 단어장 · 실비아 Voca LAB 기반`;
+    }
+  }
+
   renderTopics();
   renderSetsGrid();
 }
