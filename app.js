@@ -45,6 +45,14 @@ function normalize(s) {
 function escapeAttr(s) {
   return String(s).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
+// 학습한 카드 수를 화면 두 곳(상단 배지 + 통계)에 일관되게 반영
+function updateLearnedCount() {
+  const n = state.learned.size;
+  const badge = document.getElementById('streakNum');
+  const stat = document.getElementById('statLearned');
+  if (badge) badge.textContent = n;
+  if (stat) stat.textContent = n;
+}
 
 /* ===================== 2. INIT & HOME RENDERERS ===================== */
 function init() {
@@ -184,22 +192,40 @@ const body = document.getElementById('viewerBody');
 const titleEl = document.getElementById('viewerTitle');
 const progressBar = document.getElementById('progressBar');
 
+let activeMode = null; // 현재 열려 있는 학습 모드 ('flashcards' | 'learn' | 'test' | 'match' | null)
+
 function closeViewer() {
   viewer.classList.remove('open');
   body.innerHTML = '';
+  activeMode = null;
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   if (matchTimerId) { clearInterval(matchTimerId); matchTimerId = null; }
-  document.getElementById('statLearned').textContent = state.learned.size;
+  updateLearnedCount();
 }
 viewer.addEventListener('click', e => {
   if (e.target === viewer) closeViewer();
 });
+
+// 키보드 핸들러는 모듈 전역에 단 한 번만 등록 (리스너 누수 방지)
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && viewer.classList.contains('open')) closeViewer();
+  if (!viewer.classList.contains('open')) return;
+  if (e.key === 'Escape') { closeViewer(); return; }
+  // 낱말카드 모드 전용 단축키 (Space: 뒤집기, ←/→: 이동)
+  if (activeMode === 'flashcards') {
+    if (e.key === ' ') {
+      e.preventDefault();
+      document.getElementById('fc')?.classList.toggle('flipped');
+    } else if (e.key === 'ArrowRight') {
+      document.getElementById('nextBtn')?.click();
+    } else if (e.key === 'ArrowLeft') {
+      document.getElementById('prevBtn')?.click();
+    }
+  }
 });
 
 function openMode(mode) {
   const t = getTopic();
+  activeMode = mode;
   viewer.classList.add('open');
   titleEl.innerHTML = `${t.title} <span class="small">${t.subtitle}</span>`;
   progressBar.style.width = '0%';
@@ -268,14 +294,6 @@ function runFlashcards(t) {
     state.learned.add(key);
     refreshSpeakButtons();
   }
-
-  // keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (!viewer.classList.contains('open')) return;
-    if (e.key === ' ') { e.preventDefault(); document.getElementById('fc')?.classList.toggle('flipped'); }
-    if (e.key === 'ArrowRight') document.getElementById('nextBtn')?.click();
-    if (e.key === 'ArrowLeft')  document.getElementById('prevBtn')?.click();
-  });
 
   render();
 }
@@ -423,7 +441,9 @@ function runTest(t) {
     })),
     ...c2.map(c => {
       const flip = Math.random() > 0.5;
-      const fakeKo = shuffle(cards.filter(x => x.es !== c.es))[0].ko;
+      // 가짜 뜻은 정답 뜻과 달라야 함 (우연히 같으면 진위 판정이 깨짐)
+      const pool = cards.filter(x => x.es !== c.es && x.ko !== c.ko);
+      const fakeKo = (pool.length ? shuffle(pool)[0] : shuffle(cards.filter(x => x.es !== c.es))[0]).ko;
       return {
         type: 'tf', tag: '진위형',
         q: `"${c.es}" = "${flip ? c.ko : fakeKo}"`,
@@ -442,6 +462,17 @@ function runTest(t) {
   ];
 
   const answers = {};
+
+  // 방어: 카드가 비정상적으로 적어 문제가 하나도 안 만들어지면 안내 후 종료
+  if (questions.length === 0) {
+    body.innerHTML = `
+      <div style="text-align:center; padding: 40px 12px;">
+        <p style="color:var(--text-soft); margin-bottom:18px;">이 주제는 시험을 만들기에 카드가 부족합니다.</p>
+        <button class="btn-primary" onclick="closeViewer()">닫기</button>
+      </div>
+    `;
+    return;
+  }
 
   function render() {
     progressBar.style.width = '0%';
