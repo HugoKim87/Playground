@@ -48,6 +48,10 @@ function escapeAttr(s) {
 
 /* ===================== 2. INIT & HOME RENDERERS ===================== */
 function init() {
+  // 데이터(TOPICS)의 첫 번째 Day를 항상 기본 선택으로 보장
+  if (TOPICS.length && !TOPICS.some(t => t.id === state.topicId)) {
+    state.topicId = TOPICS[0].id;
+  }
   const totalCards = TOPICS.reduce((s, t) => s + t.cards.length, 0);
   document.getElementById('totalWords').textContent = totalCards + '+';
   document.getElementById('statTotal').textContent = totalCards;
@@ -152,7 +156,7 @@ function openMode(mode) {
 /* ===================== 5. MODE: FLASHCARDS ===================== */
 function runFlashcards(t) {
   let i = 0;
-  const cards = [...t.cards];
+  const cards = shuffle(t.cards); // 랜덤 순서로 출제
 
   function render() {
     progressBar.style.width = ((i + 1) / cards.length * 100) + '%';
@@ -222,9 +226,10 @@ function runFlashcards(t) {
 /* ===================== 6. MODE: LEARN ===================== */
 function runLearn(t) {
   // 객관식 / 단답형 섞어서 출제, 오답은 큐 뒤로 보내서 재출제
-  let queue = t.cards.map((c, idx) => ({
+  // 카드 순서를 랜덤으로 섞은 뒤, 약 1/4 비율로 단답형을 무작위 배치
+  let queue = shuffle(t.cards).map((c) => ({
     card: c,
-    type: idx % 4 === 3 ? 'fill' : 'choice',
+    type: Math.random() < 0.25 ? 'fill' : 'choice',
     tries: 0,
   }));
   let completed = 0;
