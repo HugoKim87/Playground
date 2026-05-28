@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>¡Vamos! · 스페인어 학습</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      ¡Vamos!
+    </div>
+    <nav class="header-nav">
+      <button class="nav-pill">학습 도구</button>
+      <button class="nav-pill">주제</button>
+      <button class="nav-pill">진도</button>
+    </nav>
+    <div class="header-right">
+      <div class="streak-badge">🔥 <span id="streakNum">7</span>일</div>
+      <button class="btn-login">로그인</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="hero-eyebrow">실비아 Voca LAB · Day 5 ~ Day 32</span>
+  <h1>어떻게 <em>학습</em>하고<br/>싶으세요?</h1>
+  <p class="hero-sub">지금까지 정리한 <strong id="totalWords">200+</strong>개의 스페인어 단어와 표현을 4가지 방식으로 익혀보세요. 발음 듣기, 객관식 학습, 시험, 카드 맞추기까지 한 페이지에서.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num" id="statTopics">28</span><span class="stat-lbl">주제</span></div>
+    <div class="stat"><span class="stat-num" id="statTotal">0</span><span class="stat-lbl">총 단어/표현</span></div>
+    <div class="stat"><span class="stat-num" id="statLearned">0</span><span class="stat-lbl">학습한 카드</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-lbl">학습 모드</span></div>
+  </div>
+
+  <div class="hero-decor">
+    <div class="decor-card c1">la playa 🏖️</div>
+    <div class="decor-card c2">Tengo que...</div>
+    <div class="decor-card c3">¿Cómo estás?</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">주제 선택</div>
+      <div class="section-sub">학습할 Day를 선택하세요</div>
+    </div>
+  </div>
+  <div class="topic-bar" id="topicBar"></div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">학습 모드</div>
+      <div class="section-sub" id="modeSub">주제를 선택한 뒤 모드를 골라주세요</div>
+    </div>
+  </div>
+  <div class="modes">
+    <button class="mode-card" data-mode="flashcards" onclick="openMode('flashcards')">
+      <div>
+        <div class="mode-icon">🃏</div>
+        <h3>낱말카드</h3>
+        <div class="mode-desc">앞면 스페인어 ↔ 뒷면 한국어. 클릭으로 뒤집고 발음을 들어보세요.</div>
+      </div>
+      <div class="mode-mini">A</div>
+    </button>
+    <button class="mode-card" data-mode="learn" onclick="openMode('learn')">
+      <div>
+        <div class="mode-icon">🧠</div>
+        <h3>학습하기</h3>
+        <div class="mode-desc">객관식 → 빈칸 채우기. 오답은 자동 반복 출제됩니다.</div>
+      </div>
+      <div class="mode-mini">B</div>
+    </button>
+    <button class="mode-card" data-mode="test" onclick="openMode('test')">
+      <div>
+        <div class="mode-icon">📝</div>
+        <h3>테스트</h3>
+        <div class="mode-desc">선택형·진위형·단답형이 섞인 종합 시험. 점수와 오답 리뷰까지.</div>
+      </div>
+      <div class="mode-mini">C</div>
+    </button>
+    <button class="mode-card" data-mode="match" onclick="openMode('match')">
+      <div>
+        <div class="mode-icon">⚡</div>
+        <h3>카드 맞추기</h3>
+        <div class="mode-desc">스페인어와 한국어 짝을 빠르게 맞춰보세요. 시간 기록 도전!</div>
+      </div>
+      <div class="mode-mini">D</div>
+    </button>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">인기 단어장</div>
+      <div class="section-sub">선택한 Day의 미리보기</div>
+    </div>
+  </div>
+  <div class="sets-grid" id="setsGrid"></div>
+</section>
+
+<footer class="footer">
+  ¡Vamos! 스페인어 학습 · Day 5 → Day 32 통합 단어장 · 데이터는 브라우저에 저장됩니다
+</footer>
+
+<!-- ============ VIEWER (modal) ============ -->
+<div class="viewer-backdrop" id="viewer">
+  <div class="viewer">
+    <div class="viewer-head">
+      <div class="progress" style="flex:1;"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+      <div class="viewer-title" id="viewerTitle"></div>
+      <button class="viewer-close" onclick="closeViewer()">✕</button>
+    </div>
+    <div class="viewer-body" id="viewerBody"></div>
+  </div>
+</div>
+
+<!-- ============ SCRIPTS ============ -->
+<!-- 데이터는 data.js에만 있습니다. 새 단어 추가/수정은 data.js만 편집하세요. -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
