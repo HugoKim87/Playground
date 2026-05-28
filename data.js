@@ -95,7 +95,7 @@ const TOPICS = [
   },
   {
     id: 'day9', emoji: '🎒',
-    title: 'Day 9 · 가방 (1)',
+    title: 'Day 9 · 일상 소지품',
     subtitle: '¿Qué tengo en mi bolso?',
     cards: [
       { es: 'el bolso', ko: '가방' },
@@ -112,8 +112,8 @@ const TOPICS = [
   },
   {
     id: 'day10', emoji: '👜',
-    title: 'Day 10 · 가방 (2)',
-    subtitle: '여행용 소지품',
+    title: 'Day 10 · 여행 소지품',
+    subtitle: '¿Qué debo llevar de viaje?',
     cards: [
       { es: 'el pasaporte', ko: '여권' },
       { es: 'el DNI', ko: '신분증' },
@@ -215,8 +215,8 @@ const TOPICS = [
   },
   {
     id: 'day16', emoji: '👨‍👩‍👧',
-    title: 'Day 16 · 인물/관계',
-    subtitle: 'Mi familia',
+    title: 'Day 16 · 가족',
+    subtitle: '¿Quiénes forman parte de mi familia?',
     cards: [
       { es: 'el padre', ko: '아버지' },
       { es: 'la madre', ko: '어머니' },
@@ -233,7 +233,7 @@ const TOPICS = [
   {
     id: 'day17', emoji: '🤗',
     title: 'Day 17 · 누구랑?',
-    subtitle: 'Estoy con + 사람',
+    subtitle: '¿Con quién paso mi tiempo?',
     cards: [
       { es: 'Estoy con mi familia.', ko: '나는 가족과 함께 있다.' },
       { es: 'Estoy con mis amigos.', ko: '나는 친구들과 함께 있다.' },
