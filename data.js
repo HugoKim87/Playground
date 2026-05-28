@@ -1,5 +1,5 @@
 /* =========================================================
-   ¡Vamos! · 스페인어 학습 데이터 (Day 5 ~ Day 32)
+   ¡Vamos! · 스페인어 학습 데이터 (Day 1 ~ Day 32)
    ---------------------------------------------------------
    📝 사용법:
    - 새 단어/표현 추가: 해당 Day의 cards 배열에 { es, ko } 추가
@@ -21,6 +21,98 @@
    ========================================================= */
 
 const TOPICS = [
+  {
+    id: 'day1', emoji: '🏢',
+    title: 'Day 1 · 사무실',
+    subtitle: '¿Qué hago en mi oficina?',
+    cards: [
+      { es: 'la oficina', ko: '사무실' },
+      { es: 'el documento', ko: '문서' },
+      { es: 'el informe', ko: '보고서' },
+      { es: 'la solicitud', ko: '신청서' },
+      { es: 'el formulario', ko: '양식, 서식' },
+      { es: 'preparar', ko: '준비하다' },
+      { es: 'imprimir', ko: '인쇄하다' },
+      { es: 'firmar', ko: '서명하다' },
+      { es: 'revisar', ko: '검토하다' },
+      { es: 'enviar', ko: '보내다' },
+      { es: 'archivar', ko: '문서를 보관하다, 철하다' },
+      { es: 'rellenar', ko: '(양식을) 작성하다' },
+      { es: 'Tengo que preparar el documento.', ko: '나는 문서를 준비해야 한다.' },
+      { es: 'Estoy imprimiendo un informe.', ko: '나는 보고서를 인쇄하고 있다.' },
+      { es: 'Voy a enviar el documento.', ko: '나는 문서를 보낼 것이다.' },
+      { es: 'Puedo rellenar el formulario.', ko: '나는 양식을 작성할 수 있다.' },
+    ],
+  },
+  {
+    id: 'day2', emoji: '☕',
+    title: 'Day 2 · 카페',
+    subtitle: '¿Qué hago en la cafetería?',
+    cards: [
+      { es: 'la cafetería', ko: '카페' },
+      { es: 'el café con leche', ko: '카페라떼' },
+      { es: 'el té', ko: '차' },
+      { es: 'el zumo', ko: '주스' },
+      { es: 'la tarta', ko: '케이크, 타르트' },
+      { es: 'la carta', ko: '메뉴판' },
+      { es: 'la cuenta', ko: '계산서' },
+      { es: 'la terraza', ko: '테라스' },
+      { es: 'pedir un café', ko: '커피를 주문하다' },
+      { es: 'elegir de la carta', ko: '메뉴판에서 고르다' },
+      { es: 'tomar algo', ko: '뭔가를 마시다' },
+      { es: 'sentarse en la terraza', ko: '테라스에 앉다' },
+      { es: 'pagar la cuenta', ko: '계산하다' },
+      { es: 'Voy a pedir un café con leche.', ko: '나는 카페라떼를 주문할 것이다.' },
+      { es: 'Quiero sentarme cerca de la ventana.', ko: '나는 창가에 앉고 싶다.' },
+      { es: '¿Me trae la carta, por favor?', ko: '메뉴판 좀 가져다주시겠어요?' },
+    ],
+  },
+  {
+    id: 'day3', emoji: '🌳',
+    title: 'Day 3 · 공원',
+    subtitle: '¿Qué hago en el parque?',
+    cards: [
+      { es: 'el parque', ko: '공원' },
+      { es: 'el sendero', ko: '산책로, 오솔길' },
+      { es: 'el perro', ko: '개' },
+      { es: 'el picnic', ko: '피크닉' },
+      { es: 'el aire libre', ko: '야외, 바깥 공기' },
+      { es: 'caminar por el sendero', ko: '산책로를 따라 걷다' },
+      { es: 'pasear al perro', ko: '개를 산책시키다' },
+      { es: 'escuchar música', ko: '음악을 듣다' },
+      { es: 'hacer ejercicio', ko: '운동하다' },
+      { es: 'comer al aire libre', ko: '야외에서 먹다' },
+      { es: 'hacer un picnic', ko: '피크닉을 하다' },
+      { es: 'tomar una selfie', ko: '셀카를 찍다' },
+      { es: 'andar', ko: '걷다' },
+      { es: 'Voy a caminar por el sendero del parque.', ko: '나는 공원 산책로를 따라 걸을 것이다.' },
+      { es: 'Tengo que pasear al perro en el parque.', ko: '나는 공원에서 개를 산책시켜야 한다.' },
+      { es: 'Quiero hacer un picnic en el parque.', ko: '나는 공원에서 피크닉을 하고 싶다.' },
+    ],
+  },
+  {
+    id: 'day4', emoji: '📚',
+    title: 'Day 4 · 도서관',
+    subtitle: '¿Qué hago en la biblioteca?',
+    cards: [
+      { es: 'la biblioteca', ko: '도서관' },
+      { es: 'el libro', ko: '책' },
+      { es: 'el estante', ko: '책장, 서가' },
+      { es: 'el carné', ko: '회원증, 카드' },
+      { es: 'la sala de lectura', ko: '열람실' },
+      { es: 'el silencio', ko: '정숙, 조용함' },
+      { es: 'buscar un libro', ko: '책을 찾다' },
+      { es: 'pedir prestado un libro', ko: '책을 대출하다' },
+      { es: 'devolver el libro', ko: '책을 반납하다' },
+      { es: 'leer en silencio', ko: '조용히 읽다' },
+      { es: 'estudiar', ko: '공부하다' },
+      { es: 'tomar apuntes', ko: '필기하다' },
+      { es: 'guardar silencio', ko: '정숙을 지키다' },
+      { es: 'Tengo que devolver el libro hoy.', ko: '나는 오늘 책을 반납해야 한다.' },
+      { es: 'Voy a estudiar en la sala de lectura.', ko: '나는 열람실에서 공부할 것이다.' },
+      { es: 'Hay que guardar silencio en la biblioteca.', ko: '도서관에서는 정숙해야 한다.' },
+    ],
+  },
   {
     id: 'day5', emoji: '🏋️',
     title: 'Day 5 · 헬스장',
@@ -95,7 +187,7 @@ const TOPICS = [
   },
   {
     id: 'day9', emoji: '🎒',
-    title: 'Day 9 · 일상 소지품',
+    title: 'Day 9 · 소지품 (일상)',
     subtitle: '¿Qué tengo en mi bolso?',
     cards: [
       { es: 'el bolso', ko: '가방' },
@@ -108,12 +200,14 @@ const TOPICS = [
       { es: 'las gafas', ko: '안경' },
       { es: 'la botella', ko: '물병' },
       { es: 'el pañuelo', ko: '손수건' },
+      { es: 'el bolígrafo', ko: '볼펜' },
+      { es: 'el espejo', ko: '거울' },
     ],
   },
   {
     id: 'day10', emoji: '👜',
-    title: 'Day 10 · 여행 소지품',
-    subtitle: '¿Qué debo llevar de viaje?',
+    title: 'Day 10 · 소지품 (여행)',
+    subtitle: '¿Qué llevo en mi maleta?',
     cards: [
       { es: 'el pasaporte', ko: '여권' },
       { es: 'el DNI', ko: '신분증' },
@@ -125,6 +219,8 @@ const TOPICS = [
       { es: 'el cargador', ko: '충전기' },
       { es: 'la maleta', ko: '캐리어' },
       { es: 'el billete', ko: '티켓, 표' },
+      { es: 'la cámara', ko: '카메라' },
+      { es: 'el seguro de viaje', ko: '여행자 보험' },
     ],
   },
   {
@@ -160,6 +256,8 @@ const TOPICS = [
       { es: 'meterse en el agua', ko: '물에 들어가다' },
       { es: 'protegerse', ko: '자신을 보호하다' },
       { es: 'secarse', ko: '몸을 말리다' },
+      { es: 'la sombrilla', ko: '파라솔' },
+      { es: 'el protector solar', ko: '선크림' },
     ],
   },
   {
@@ -177,6 +275,8 @@ const TOPICS = [
       { es: 'devolver', ko: '반품하다' },
       { es: 'la oferta', ko: '할인, 행사' },
       { es: 'la bolsa', ko: '봉투' },
+      { es: 'el recibo', ko: '영수증' },
+      { es: 'hacer la compra', ko: '장을 보다' },
     ],
   },
   {
@@ -194,6 +294,8 @@ const TOPICS = [
       { es: 'tomar la temperatura', ko: '체온을 재다' },
       { es: 'examinar', ko: '진찰하다' },
       { es: 'recetar', ko: '처방하다' },
+      { es: 'la sala de espera', ko: '대기실' },
+      { es: 'pedir cita', ko: '진료 예약을 하다' },
     ],
   },
   {
@@ -211,12 +313,14 @@ const TOPICS = [
       { es: 'ver una película', ko: '영화를 보다' },
       { es: 'salir a cenar', ko: '저녁 먹으러 나가다' },
       { es: 'pasar tiempo en casa', ko: '집에서 시간을 보내다' },
+      { es: 'dormir hasta tarde', ko: '늦잠을 자다' },
+      { es: 'hacer las tareas del hogar', ko: '집안일을 하다' },
     ],
   },
   {
     id: 'day16', emoji: '👨‍👩‍👧',
     title: 'Day 16 · 가족',
-    subtitle: '¿Quiénes forman parte de mi familia?',
+    subtitle: '¿Quiénes son mi familia?',
     cards: [
       { es: 'el padre', ko: '아버지' },
       { es: 'la madre', ko: '어머니' },
@@ -228,12 +332,14 @@ const TOPICS = [
       { es: 'la novia', ko: '여자친구' },
       { es: 'el amigo', ko: '친구 (남)' },
       { es: 'la pareja', ko: '연인, 파트너' },
+      { es: 'el abuelo', ko: '할아버지' },
+      { es: 'la abuela', ko: '할머니' },
     ],
   },
   {
     id: 'day17', emoji: '🤗',
     title: 'Day 17 · 누구랑?',
-    subtitle: '¿Con quién paso mi tiempo?',
+    subtitle: '¿Con quién estoy?',
     cards: [
       { es: 'Estoy con mi familia.', ko: '나는 가족과 함께 있다.' },
       { es: 'Estoy con mis amigos.', ko: '나는 친구들과 함께 있다.' },
@@ -245,6 +351,8 @@ const TOPICS = [
       { es: 'Vivo con mis padres.', ko: '나는 부모님과 산다.' },
       { es: 'Trabajo con mi jefe.', ko: '나는 상사와 일한다.' },
       { es: 'Salgo con mis amigos.', ko: '나는 친구들과 외출한다.' },
+      { es: 'Estudio con mi compañero.', ko: '나는 동료와 공부한다.' },
+      { es: 'Como con mi familia.', ko: '나는 가족과 함께 식사한다.' },
     ],
   },
   {
@@ -262,6 +370,8 @@ const TOPICS = [
       { es: 'hacer senderismo', ko: '하이킹하다' },
       { es: 'relajarse', ko: '휴식을 취하다' },
       { es: 'quedarse en casa', ko: '집에 머무르다' },
+      { es: 'reservar un hotel', ko: '호텔을 예약하다' },
+      { es: 'hacer turismo', ko: '관광하다' },
     ],
   },
   {
@@ -279,6 +389,8 @@ const TOPICS = [
       { es: 'cambiar dinero', ko: '환전하다' },
       { es: 'transferir', ko: '송금하다' },
       { es: 'abrir una cuenta', ko: '계좌를 개설하다' },
+      { es: 'la comisión', ko: '수수료' },
+      { es: 'consultar el saldo', ko: '잔액을 조회하다' },
     ],
   },
   {
