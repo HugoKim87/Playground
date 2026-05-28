@@ -105,22 +105,78 @@ function renderSetsGrid() {
 }
 
 /* ===================== 3. TTS ===================== */
+/*
+  Web Speech API 기반 발음 재생.
+  - 음성 목록(voices)을 캐싱해 첫 클릭부터 스페인어 음성을 보장
+  - 스페인어 음성 우선순위: es-ES(스페인) > 기타 es-* > 없으면 기본 음성
+  - 스페인어 음성 존재 여부를 ttsState.hasSpanish 로 노출 (🔊 버튼 표시에 사용)
+*/
+const ttsState = {
+  supported: 'speechSynthesis' in window,
+  voices: [],
+  spanishVoice: null,
+  hasSpanish: false,
+  ready: false,
+};
+
+function pickSpanishVoice(voices) {
+  if (!voices || !voices.length) return null;
+  // es-ES 우선, 그다음 아무 스페인어 변종(es-MX, es-US 등)
+  return (
+    voices.find(v => v.lang && v.lang.toLowerCase() === 'es-es') ||
+    voices.find(v => v.lang && v.lang.toLowerCase().startsWith('es')) ||
+    null
+  );
+}
+
+function loadVoices() {
+  if (!ttsState.supported) return;
+  const voices = window.speechSynthesis.getVoices();
+  if (voices && voices.length) {
+    ttsState.voices = voices;
+    ttsState.spanishVoice = pickSpanishVoice(voices);
+    ttsState.hasSpanish = !!ttsState.spanishVoice;
+    ttsState.ready = true;
+    // 음성 목록이 늦게 로드된 경우, 화면의 🔊 버튼 상태를 갱신
+    refreshSpeakButtons();
+  }
+}
+
+if (ttsState.supported) {
+  // 일부 브라우저(크롬)는 getVoices()가 처음엔 빈 배열 → 이벤트로 다시 로드
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices(); // 즉시 시도 (사파리/파이어폭스는 바로 채워짐)
+  // 안전망: 이벤트가 안 올 때를 대비해 약간 지연 후 재시도
+  setTimeout(loadVoices, 250);
+  setTimeout(loadVoices, 1000);
+}
+
 function speak(text, lang = 'es-ES') {
-  if (!('speechSynthesis' in window)) return;
+  if (!ttsState.supported || !text) return;
+  // 아직 음성 목록이 없으면 한 번 더 로드 시도
+  if (!ttsState.ready) loadVoices();
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
   u.rate = 0.92;
-  const voices = window.speechSynthesis.getVoices();
-  const esVoice = voices.find(v => v.lang.startsWith('es'));
-  if (esVoice) u.voice = esVoice;
+  if (ttsState.spanishVoice) u.voice = ttsState.spanishVoice;
   window.speechSynthesis.speak(u);
 }
-// preload voices (some browsers load asynchronously)
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.onvoiceschanged = () => {};
-  window.speechSynthesis.getVoices();
+
+// 화면에 떠 있는 🔊 버튼들의 사용 가능 여부를 갱신
+function refreshSpeakButtons() {
+  if (ttsState.supported && ttsState.hasSpanish) return; // 정상이면 표시 변경 불필요
+  document.querySelectorAll('.fc-speak, .speak-mini').forEach(btn => {
+    if (!ttsState.supported) {
+      btn.title = '이 브라우저는 음성 재생을 지원하지 않습니다';
+    } else if (!ttsState.hasSpanish) {
+      // 스페인어 음성이 없으면 기본 음성으로 읽히므로 발음이 부정확할 수 있음을 안내
+      btn.title = '스페인어 음성이 없어 기본 음성으로 재생됩니다 (기기에 스페인어 음성 설치 권장)';
+      btn.style.opacity = '0.55';
+    }
+  });
 }
+
 
 /* ===================== 4. VIEWER (modal) ===================== */
 const viewer = document.getElementById('viewer');
@@ -210,6 +266,7 @@ function runFlashcards(t) {
       render();
     };
     state.learned.add(key);
+    refreshSpeakButtons();
   }
 
   // keyboard navigation
@@ -306,6 +363,7 @@ function runLearn(t) {
         next.onclick = nextQ;
       };
     });
+    refreshSpeakButtons();
   }
 
   function renderFill(q) {
