@@ -184,7 +184,7 @@ function speak(text, lang = 'es-ES') {
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
-  u.rate = 0.92;
+  u.rate = 0.82;
   if (ttsState.spanishVoice) u.voice = ttsState.spanishVoice;
   window.speechSynthesis.speak(u);
 }
